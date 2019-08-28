@@ -9,8 +9,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/CyrivlClth/salthash/verifier"
 	"golang.org/x/crypto/pbkdf2"
+
+	"github.com/CyrivlClth/salthash/verifier"
 )
 
 type digest struct {
@@ -72,14 +73,15 @@ func New(saltLen, iter int) verifier.Verifier {
 	}
 }
 
+const str = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
 // 生成随机字符串
 func GetRandomString(length int) []byte {
-	str := "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	bytes := []byte(str)
-	var result []byte
+	result := make([]byte, length)
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	for i := 0; i < length; i++ {
-		result = append(result, bytes[r.Intn(len(bytes))])
+		result[i] = bytes[r.Intn(len(bytes))]
 	}
 	return result
 }
